@@ -1,0 +1,233 @@
+/* Babykin web pages, in the D3 look (docs/design-system.md in the app repo).
+   Fonts are served from this site so no page sends visitors' details to Google. */
+
+@font-face {
+  font-family: 'Fredoka';
+  src: url('fonts/Fredoka-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('fonts/PlusJakartaSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('fonts/PlusJakartaSans-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+}
+
+/* Day tokens; the phone's dark mode picks Night, as in the app. */
+:root {
+  color-scheme: light dark;
+  --ink: #2b2420;
+  --ink-muted: #554b45;
+  --kin: #1d6b63;
+  --line: rgba(43, 36, 32, 0.1);
+  --surface: #fbf8f3;
+  --notice: #8a5a00;
+  --notice-soft: #fbecd2;
+  --sky: linear-gradient(180deg, #b9d9f0 0%, #d4e8f4 38%, #ecf1ef 70%, #f6efe5 100%);
+  --light: #fff3d1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #f3ede4;
+    --ink-muted: #b9ad9f;
+    --kin: #6fbfb3;
+    --line: rgba(255, 255, 255, 0.12);
+    --surface: #14110e;
+    --notice: #e0b46a;
+    --notice-soft: #3a2a12;
+    --sky: linear-gradient(180deg, #0e1330 0%, #1b1f45 55%, #2c2652 100%);
+    --light: #f3e3c3;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--surface);
+  color: var(--ink);
+  font: 500 1.0625rem/1.6 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* The sky pages: the midday sky with the sun half off the top edge, or the night sky with the moon
+   top right. One light, never behind words. */
+body.sky {
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+  background: var(--sky);
+  background-attachment: fixed;
+}
+body.sky::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: -10.5rem;
+  left: 50%;
+  width: 17.5rem;
+  height: 17.5rem;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--light) 0 34%, color-mix(in srgb, var(--light) 40%, transparent) 50%, transparent 72%);
+  pointer-events: none;
+}
+@media (prefers-color-scheme: dark) {
+  body.sky::before {
+    top: -4.5rem;
+    right: -3.5rem;
+    left: auto;
+    width: 12rem;
+    height: 12rem;
+    transform: none;
+  }
+}
+
+main,
+footer {
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+main {
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+}
+body.sky main {
+  padding-top: 8.5rem;
+}
+
+h1 {
+  margin: 0 0 1rem;
+  font: 600 2.5rem/1.2 'Fredoka', 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+h2 {
+  margin: 2rem 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+h3 {
+  margin: 1.5rem 0 0.25rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+p,
+ul,
+ol {
+  margin: 0 0 1rem;
+}
+
+ul,
+ol {
+  padding-left: 1.25rem;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+strong {
+  font-weight: 600;
+}
+
+.lede {
+  font-size: 1.1875rem;
+}
+
+.muted {
+  color: var(--ink-muted);
+  font-size: 0.9375rem;
+}
+
+section + section {
+  margin-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+
+/* Things that need a look: notice on notice-soft, always said in words. */
+.notice {
+  margin: 0 0 1.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 1.375rem;
+  background: var(--notice-soft);
+}
+.notice strong {
+  color: var(--notice);
+}
+
+a {
+  color: var(--kin);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--kin);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* Join steps: the step number in the display face. */
+ol.steps {
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+ol.steps li {
+  position: relative;
+  margin-bottom: 1rem;
+  padding-left: 2.75rem;
+  counter-increment: step;
+}
+ol.steps li::before {
+  content: counter(step);
+  position: absolute;
+  top: -0.1rem;
+  left: 0;
+  font: 600 1.5rem/1.4 'Fredoka', system-ui, sans-serif;
+  color: var(--ink-muted);
+}
+
+footer {
+  padding-bottom: 2rem;
+}
+footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.5rem;
+  border-top: 1px solid var(--line);
+  padding-top: 0.5rem;
+}
+/* Every link is at least 44 pt tall. */
+footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 0.5rem;
+}
+footer a:first-child {
+  margin-left: -0.5rem;
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+}
