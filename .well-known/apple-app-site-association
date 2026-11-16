@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["79494HT233.com.xwteoh.babylog"],
+        "components": [
+          { "/": "/babykin/join", "comment": "Babykin invite links" },
+          { "/": "/babykin/join/*", "comment": "Babykin invite links" }
+        ]
+      }
+    ]
+  }
+}
